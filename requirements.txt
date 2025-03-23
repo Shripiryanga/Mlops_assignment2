@@ -3,3 +3,13 @@ tensorflow
 optuna
 mlflow
 evidently
+numpy
+opencv-python
+scikit-image
+scikit-learn
+tensorflow
+shap
+matplotlib
+seaborn
+sweetviz
+pandas
