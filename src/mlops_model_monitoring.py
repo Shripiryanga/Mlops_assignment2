@@ -183,7 +183,7 @@ def log_model(model, test_h2o, y_test, best_params):
         mlflow.log_params(best_params)
         model_path = "trained_model/final_h2o_model"
         print ("========= Model getting saved ==========")
-        joblib.dump(tuned_model, model_path)
+        joblib.dump(model, model_path)
         mlflow.sklearn.log_model(model, "final_h2o_model")
 
     return accuracy
