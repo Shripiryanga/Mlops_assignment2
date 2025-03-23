@@ -27,9 +27,9 @@ jobs:
       - name: Run MLOps Pipeline
         run: python src/mlops_pipeline_fashion_mnist.py
 
-      - name: Archive logs
-        if: always()
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: mlops-logs
-          path: logs/
+      # - name: Archive logs
+      #   if: always()
+      #   uses: actions/upload-artifact@v3.1.3
+      #   with:
+      #     name: mlops-logs
+      #     path: logs/
