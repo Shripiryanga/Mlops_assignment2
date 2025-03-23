@@ -56,7 +56,7 @@ def train_automl(train_h2o, x, y):
     print("\n \n")
     print("================================== AutoML Training Started ============================")
     print("\n \n")
-    aml = H2OAutoML(max_models=10, seed=42, exclude_algos=["StackedEnsemble", "DeepLearning"], max_runtime_secs=100)
+    aml = H2OAutoML(max_models=10, seed=42, exclude_algos=["StackedEnsemble", "DeepLearning"], max_runtime_secs=300)
     aml.train(x=x, y=y, training_frame=train_h2o)
     best_model = aml.leader
     print("\n \n")
@@ -126,13 +126,8 @@ def objective(trial, best_algo, x, y, train_h2o, test_h2o):
             accuracy = 0  # Default if confusion matrix is unavailable
 
         print("Calculated Accuracy:", accuracy)
+        return accuracy
 
-        # Balanced metric
-        return accuracy - 0.1 * logloss
-
-        #return logloss - accuracy 
-        #loss = model.model_performance(test_h2o).logloss()
-        #return accuracy 
     return 0
 
 def optimize_hyperparameters(best_algo, x, y, train_h2o, test_h2o):
@@ -142,7 +137,7 @@ def optimize_hyperparameters(best_algo, x, y, train_h2o, test_h2o):
     # Enable logging
     optuna.logging.set_verbosity(optuna.logging.INFO)
     study = optuna.create_study(direction="maximize")
-    study.optimize(lambda trial: objective(trial, best_algo, x, y, train_h2o, test_h2o), n_trials=3)
+    study.optimize(lambda trial: objective(trial, best_algo, x, y, train_h2o, test_h2o), n_trials=5)
 
     best_params = study.best_params
     best_logloss = study.best_value
