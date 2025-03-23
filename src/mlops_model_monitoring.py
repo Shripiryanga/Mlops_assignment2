@@ -23,6 +23,7 @@ from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
 from evidently.test_suite import TestSuite
 from evidently.tests import TestColumnDrift
+import joblib
 
 def initialize_h2o():
     print("\n \n")
@@ -170,7 +171,7 @@ def log_model(model, test_h2o, y_test, best_params):
     print("\n \n")
     mlflow.set_experiment("FashionMNIST_H2O")
     os.makedirs("trained_model", exist_ok=True)
-    
+    model_path = "trained_model/final_h2o_model.pkl"
     with mlflow.start_run():
         predictions = model.predict(test_h2o).as_data_frame()["predict"]
         accuracy = accuracy_score(y_test, predictions)
@@ -181,6 +182,8 @@ def log_model(model, test_h2o, y_test, best_params):
         mlflow.log_metrics({"Test_Accuracy": accuracy})
         mlflow.log_params(best_params)
         model_path = "trained_model/final_h2o_model"
+        print ("========= Model getting saved ==========")
+        joblib.dump(tuned_model, model_path)
         mlflow.sklearn.log_model(model, "final_h2o_model")
 
     return accuracy
