@@ -264,6 +264,17 @@ def save_log(filename, content):
 
     print(f"Log saved to: {filepath}")
 
+def generate_drift_report(reference_df, current_df, ref_name, curr_name):
+    report = Report(metrics=[DataDriftPreset()])
+    report.run(reference_data=reference_df, current_data=current_df)
+
+    # Save HTML report
+    report_path = f"drift_report_{ref_name}_vs_{curr_name}.html"
+    report.save_html(report_path)
+    print(f"Drift report saved: {report_path}")
+
+    return report
+
 
 def run_pipeline():
     print("\n \n")
