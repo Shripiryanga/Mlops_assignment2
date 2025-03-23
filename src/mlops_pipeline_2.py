@@ -19,18 +19,22 @@ from h2o.estimators import (
 import os
 
 def initialize_h2o():
+    print("\n \n")
     print("============================= Initializing H2O Server ===========================")
+    print("\n \n")
     h2o.init()
 
 def load_data():
-    print("==== Loading Fashion MNIST Data ====")
+    print("======================== Loading Fashion MNIST Data ============================")
     (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
     X_train, y_train = X_train[:100].reshape(100, -1), y_train[:100]
     X_test, y_test = X_test[:100].reshape(100, -1), y_test[:100]
     return X_train, y_train, X_test, y_test
 
 def convert_to_h2o(X_train, y_train, X_test, y_test):
+    print("\n \n")
     print("============================== Converting Data to H2O Frames =========================")
+    print("\n \n")
     train_df = pd.DataFrame(X_train)
     train_df["label"] = y_train
     test_df = pd.DataFrame(X_test)
@@ -42,7 +46,9 @@ def convert_to_h2o(X_train, y_train, X_test, y_test):
     return train_h2o, test_h2o
 
 def train_automl(train_h2o, x, y):
+    print("\n \n")
     print("================================== AutoML Training Started ============================")
+    print("\n \n")
     aml = H2OAutoML(max_models=10, seed=42, exclude_algos=["StackedEnsemble", "DeepLearning"], max_runtime_secs=50)
     aml.train(x=x, y=y, training_frame=train_h2o)
     best_model = aml.leader
@@ -92,7 +98,9 @@ def optimize_hyperparameters(best_algo, x, y, train_h2o, test_h2o):
     study.optimize(lambda trial: objective(trial, best_algo, x, y, train_h2o, test_h2o), n_trials=3)
     best_params_log = f"Best Params: {study.best_params}\nBest LogLoss: {study.best_value}"
     #save_log("optuna_study.txt", best_params_log)
+    print("\n \n")
     print("================================ Logging Model to MLflow ==============================")
+    print("\n \n")
     with mlflow.start_run():
         mlflow.log_params(study.best_params)
         mlflow.log_metric("Best_LogLoss", study.best_value)
@@ -112,7 +120,9 @@ def log_model(best_model, test_h2o, y_test):
     return best_model.algo
 
 def detect_data_drift():
+    print("\n \n")
     print("================================ Running Data Drift Detection ================================")
+    print("\n \n")
     (X_train_mnist, _), _ = mnist.load_data()
     (X_train_fashion, _), _ = fashion_mnist.load_data()
     df_mnist = pd.DataFrame(X_train_mnist[:100].reshape(100, -1) / 255.0)
@@ -126,7 +136,9 @@ def detect_data_drift():
     print("==== Data Drift Report Generated ====")
 
 def run_pipeline():
+    print("\n \n")
     print("================================ MLOps Pipeline Started Successfully ================================")
+    print("\n \n")
     initialize_h2o()
     X_train, y_train, X_test, y_test = load_data()
     train_h2o, test_h2o = convert_to_h2o(X_train, y_train, X_test, y_test)
@@ -137,8 +149,10 @@ def run_pipeline():
     best_params, best_logloss = optimize_hyperparameters(best_algo, x, y, train_h2o, test_h2o)
     print("Best Hyperparameters:", best_params)
     print("Best Log Loss:", best_logloss)
-    detect_data_drift()
+    #detect_data_drift()
+    print("\n \n")
     print("================================ MLOps Pipeline Completed Successfully ================================")
+    print("\n \n")
 
 if __name__ == "__main__":
     run_pipeline()
