@@ -28,7 +28,7 @@ jobs:
         run: python src/Model_EDA.py
 
       - name: Run MLOps Pipeline Model Finetuning and Monitoring
-        run: python src/mlops_pipeline_2.py
+        run: python src/mlops_model_monitoring.py
         
 
       # - name: Archive logs
