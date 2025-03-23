@@ -191,6 +191,9 @@ def log_model(model, test_h2o, y_test, best_params):
     return accuracy
 
 def detect_drift():
+    print("\n \n")
+    print("================================ Detect drift  ================================")
+    print("\n \n")
     (X_train_fashion, _), _ = fashion_mnist.load_data()
     (X_train_mnist, _), _ = mnist.load_data()
 
@@ -211,7 +214,7 @@ def detect_drift():
     mnist_df = pd.DataFrame(mnist_samples.reshape(100, -1), columns=[f"pixel_{i}" for i in range(28 * 28)])
 
     
-        # Generate reports
+    # Generate reports
     report_fashion_vs_aug = generate_drift_report(fashion_df, fashion_aug_df, "FashionMNIST", "Augmented_FashionMNIST")
     report_fashion_vs_mnist = generate_drift_report(fashion_df, mnist_df, "FashionMNIST", "MNIST")
 
@@ -227,7 +230,6 @@ def detect_drift():
 
 # Run drift detection
 def detect_feature_drift(reference_df, current_df, ref_name, curr_name):
- 
     warnings.simplefilter("ignore", category=RuntimeWarning)  # Shows each warning only once
     test_suite = TestSuite(tests=[TestColumnDrift(column_name=f"pixel_{i}") for i in range(28 * 28)]) # Change 'column' to 'column_name'
     test_suite.run(reference_data=reference_df, current_data=current_df)
@@ -294,7 +296,7 @@ def run_pipeline():
     print("Best Log Loss:", best_logloss)
     print(f"Final Model Accuracy: {final_accuracy:.4f}")
     
-    Step 5: Detect Any data drift
+    # Step 5: Detect Any data drift
     detect_drift()
 
     print("\n \n")
