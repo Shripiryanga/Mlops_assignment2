@@ -24,8 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run MLOps Pipeline
+      - name: Run MLOps Pipeline EDA (Script 2)
+        run: python src/Model_EDA..py
+
+      - name: Run MLOps Pipeline Model Finetuning and Monitoring
         run: python src/mlops_pipeline_2.py
+        
 
       # - name: Archive logs
       #   if: always()
