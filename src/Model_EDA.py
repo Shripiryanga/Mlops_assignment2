@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use("TkAgg")  # Backend
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tensorflow.keras.datasets import fashion_mnist
